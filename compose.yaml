@@ -32,6 +32,10 @@ services:
       - KC_DB_URL_DATABASE=floorflow
       - KC_DB_USERNAME=floorflow
       - KC_DB_PASSWORD=start234
+      - MS_CLIENT_ID=$MS_CLIENT_ID
+      - MS_CLIENT_SECRET=$MS_CLIENT_SECRET
+      - MS_TENANT_ID=$MS_TENANT_ID
+      - JAVA_OPTS_APPEND=-Dkeycloak.migration.replace-placeholders=true -Dkeycloak.migration.strategy=OVERWRITE_EXISTING
     ports:
       - "8080:8080"
     volumes:

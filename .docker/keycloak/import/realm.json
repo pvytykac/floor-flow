@@ -6,7 +6,7 @@
     {
       "clientId": "floorflow",
       "enabled": true,
-      "name": "FloorFLow UI",
+      "name": "FloorFlow UI",
       "description": "Client for FloorFlow UI",
       "clientAuthenticatorType": "client-secret",
       "publicClient": true,
@@ -38,5 +38,96 @@
         "description": "Regular User"
       }
     ]
-  }
+  },
+  "identityProviders": [
+    {
+      "alias": "oidc",
+      "displayName": "MS IDP",
+      "providerId": "oidc",
+      "enabled": true,
+      "updateProfileFirstLoginMode": "on",
+      "trustEmail": true,
+      "storeToken": false,
+      "addReadTokenRoleOnCreate": false,
+      "authenticateByDefault": false,
+      "linkOnly": false,
+      "hideOnLogin": false,
+      "config": {
+        "tokenUrl": "https://login.microsoftonline.com/${MS_TENANT_ID}/oauth2/v2.0/token",
+        "acceptsPromptNoneForwardFromClient": "false",
+        "jwksUrl": "https://login.microsoftonline.com/${MS_TENANT_ID}/discovery/v2.0/keys",
+        "isAccessTokenJWT": "false",
+        "filteredByClaim": "false",
+        "backchannelSupported": "false",
+        "caseSensitiveOriginalUsername": "false",
+        "issuer": "https://login.microsoftonline.com/${MS_TENANT_ID}/v2.0",
+        "loginHint": "false",
+        "clientAuthMethod": "client_secret_post",
+        "syncMode": "LEGACY",
+        "clientSecret": "{$MS_CLIENT_SECRET}",
+        "requiresShortStateParameter": "false",
+        "allowedClockSkew": "0",
+        "userInfoUrl": "https://graph.microsoft.com/oidc/userinfo",
+        "validateSignature": "true",
+        "clientId": "${MS_CLIENT_ID}",
+        "uiLocales": "false",
+        "disableNonce": "false",
+        "useJwksUrl": "true",
+        "sendClientIdOnLogout": "false",
+        "metadataDescriptorUrl": "https://login.microsoftonline.com/${MS_TENANT_ID}/v2.0/.well-known/openid-configuration",
+        "pkceEnabled": "false",
+        "authorizationUrl": "https://login.microsoftonline.com/${MS_TENANT_ID}/oauth2/v2.0/authorize",
+        "disableUserInfo": "false",
+        "logoutUrl": "https://login.microsoftonline.com/${MS_TENANT_ID}/oauth2/v2.0/logout",
+        "sendIdTokenOnLogout": "true",
+        "passMaxAge": "false",
+        "disableTypeClaimCheck": "false"
+      }
+    }
+  ],
+  "identityProviderMappers": [
+    {
+      "id": "42a4f187-85d7-4ea7-91ff-c2b09189222e",
+      "name": "preferred_username",
+      "identityProviderAlias": "oidc",
+      "identityProviderMapper": "oidc-user-attribute-idp-mapper",
+      "config": {
+        "syncMode": "INHERIT",
+        "claim": "preferred_username",
+        "user.attribute": "username"
+      }
+    },
+    {
+      "id": "5b42936d-9006-49f6-9648-26366b957983",
+      "name": "UserRole",
+      "identityProviderAlias": "oidc",
+      "identityProviderMapper": "oidc-role-idp-mapper",
+      "config": {
+        "syncMode": "INHERIT",
+        "claim": "roles",
+        "role": "floorflow_user",
+        "claim.value": "User"
+      }
+    },
+    {
+      "id": "efbac16d-fa26-4739-a850-62e467800360",
+      "name": "AdminRole",
+      "identityProviderAlias": "oidc",
+      "identityProviderMapper": "oidc-role-idp-mapper",
+      "config": {
+        "syncMode": "INHERIT",
+        "claim": "roles",
+        "role": "floorflow_admin",
+        "claim.value": "Admin"
+      }
+    }
+  ],
+  "authenticatorConfig": [
+    {
+      "alias": "oidc",
+      "config": {
+        "defaultProvider": "oidc"
+      }
+    }
+  ]
 }
